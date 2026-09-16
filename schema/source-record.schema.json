@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://classicmac.dev/schema/source-record-v1.json",
+  "title": "ClassicMac Source Record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "kind", "title", "locator", "redistribution", "trust"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]+$"},
+    "kind": {"enum": ["git_commit", "repository_file", "primary_documentation", "installed_toolchain", "hardware_experiment", "community_report"]},
+    "title": {"type": "string"},
+    "locator": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "repository": {"type": "string"},
+        "sha": {"type": "string"},
+        "path": {"type": "string"},
+        "url": {"type": "string"},
+        "local_source_id": {"type": "string"}
+      }
+    },
+    "redistribution": {"enum": ["public", "metadata_only", "private", "unknown"]},
+    "trust": {"enum": ["first_party_verified", "primary_source", "controlled_observation", "secondary", "unverified"]},
+    "notes": {"type": "string"},
+    "collected_at": {"type": "string", "format": "date-time"}
+  }
+}
