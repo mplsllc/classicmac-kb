@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from classicmac_kb_tools.build_index import GitRepo, build
+from classicmac_kb_tools.document_index import DocumentRepo, index_documents
 
 
 def _write_schema(root: Path) -> None:
@@ -72,6 +73,10 @@ def _make_repo(path: Path) -> None:
     _git(path, "config", "user.email", "test@example.com")
     _git(path, "config", "user.name", "Test")
     (path / "file.c").write_text("int one;\n", encoding="utf-8")
+    (path / "README.md").write_text(
+        "# CodeWarrior Workflow\n\nUse text diagnostics before screenshots.\n",
+        encoding="utf-8",
+    )
     _git(path, "add", ".")
     _git(path, "commit", "-m", "first CodeWarrior commit")
     (path / "file.c").write_text("int two;\n", encoding="utf-8")
@@ -103,12 +108,38 @@ def test_build_creates_canonical_and_full_git_history_indexes(tmp_path: Path):
         db.close()
 
 
+def test_document_index_is_opt_in_and_searchable(tmp_path: Path):
+    root = tmp_path / "kb"
+    root.mkdir()
+    _write_minimal_corpus(root)
+    repo = tmp_path / "project"
+    _make_repo(repo)
+    output = root / "build.sqlite"
+    build(root, output, [])
+
+    count = index_documents(output, [DocumentRepo("example/project", repo)])
+    assert count == 1
+
+    db = sqlite3.connect(output)
+    try:
+        row = db.execute(
+            "SELECT repository, path, title FROM document_fts WHERE document_fts MATCH 'screenshots'"
+        ).fetchone()
+        assert row == ("example/project", "README.md", "CodeWarrior Workflow")
+        assert db.execute("SELECT count(*) FROM documents").fetchone()[0] == 1
+    finally:
+        db.close()
+
+
 def test_build_rejects_unknown_evidence_source(tmp_path: Path):
     root = tmp_path / "kb"
     root.mkdir()
     _write_minimal_corpus(root, source_id="real.source")
     path = root / "knowledge" / "test.yaml"
-    path.write_text(path.read_text(encoding="utf-8").replace("real.source", "missing.source"), encoding="utf-8")
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("real.source", "missing.source"),
+        encoding="utf-8",
+    )
 
     with pytest.raises(ValueError, match="unknown source"):
         build(root, root / "build.sqlite", [])
@@ -119,7 +150,10 @@ def test_build_rejects_duplicate_knowledge_ids(tmp_path: Path):
     root.mkdir()
     _write_minimal_corpus(root)
     duplicate = root / "knowledge" / "duplicate.yaml"
-    duplicate.write_text((root / "knowledge" / "test.yaml").read_text(encoding="utf-8"), encoding="utf-8")
+    duplicate.write_text(
+        (root / "knowledge" / "test.yaml").read_text(encoding="utf-8"),
+        encoding="utf-8",
+    )
 
     with pytest.raises(ValueError, match="duplicate knowledge id"):
         build(root, root / "build.sqlite", [])
