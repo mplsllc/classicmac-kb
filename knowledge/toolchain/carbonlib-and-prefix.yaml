@@ -1,0 +1,133 @@
+schema_version: 1
+records:
+  - id: codewarrior.prefix.configuration-must-precede-conditionalmacros
+    title: Carbon configuration macros must be defined before ConditionalMacros is first included
+    scope: project
+    state: verified
+    validation_level: codewarrior_verified
+    statement: In MacSurf's CW8 build, `TARGET_API_MAC_CARBON` was defined in a normal project header only after the forced prefix had already included MacTypes/ConditionalMacros. ConditionalMacros had therefore permanently computed classic/non-Carbon defaults for the translation unit. The working correction was to move the target configuration into the prefix before the Apple headers that consume it.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      language: c
+      language_standard: c89
+      projects: [macsurf]
+      notes: The general lesson is preprocessor ordering for configuration consumed by guarded SDK headers; exact macro sets vary by project/SDK.
+    evidence:
+      - {source_id: macsurf.commit.e1fe1ddfffec5d4587d7d35cd29f447fbd0c966c, role: origin}
+    tags: [codewarrior, prefix-file, ConditionalMacros, Carbon, preprocessor, include-order]
+    last_reviewed: "2026-09-16"
+
+  - id: codewarrior.prefix-file-is-global-build-input
+    title: A forced CodeWarrior prefix file is a global build input
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: A CodeWarrior prefix file is injected into every affected translation unit, so changing it invalidates assumptions across the entire target and can dominate hardware-bisect/rebuild cost. Compatibility gates must test the same prefix-controlled configuration as the Mac build rather than an easier host-only configuration.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.e1fe1ddfffec5d4587d7d35cd29f447fbd0c966c, role: supports}
+      - {source_id: macsurf.commit.58966603c818c16a37f56c2c1ac3ab1c5392b7b3, role: supports}
+      - {source_id: macsurf.commit.fc5b924fa040b9daa00cffe73538d6052e0cd06d, role: context}
+    tags: [codewarrior, prefix-file, rebuild, bisect, configuration]
+    last_reviewed: "2026-09-16"
+
+  - id: testing.host-gate-must-match-mac-default-switches
+    title: A host compatibility gate can be false-green if it defines switches the Mac build leaves off
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: MacSurf's harness compiled a source with feature switches forced on, masking an undefined identifier that existed only in the Mac-default configuration where those switches were off. A dedicated `check-macdefault` configuration reproduced the Mac-side switch state and caught the error. Compatibility gates must exercise the actual target preprocessor configuration, not merely compile the same source file somehow.
+    applicability:
+      toolchain_family: codewarrior
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.34e81b185575aff9260dfe0df2a058eb37953669, role: origin}
+    tags: [testing, preprocessor, false-green, codewarrior, configuration, prefix-file]
+    last_reviewed: "2026-09-16"
+
+  - id: carbonlib.controlactionupp-raw-function-pointer-incompatible
+    title: A raw PPC function pointer is not a safe substitute for a CarbonLib ControlActionUPP
+    scope: project
+    state: verified
+    validation_level: hardware_verified
+    statement: On MacSurf's tested CarbonLib/CW8 hardware path, overriding `NewControlActionUPP(proc)` to cast a raw PPC function pointer caused `TrackControl`/CarbonLib to interpret code bytes as a MixedMode routine descriptor and branch through an invalid address. Removing that raw-pointer substitution eliminated the callback path. Do not assume the Mach-O Carbon raw-function-pointer UPP model applies to CarbonLib CFM code.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      architectures: [powerpc]
+      os_family: classic-mac-os
+      projects: [macsurf]
+      notes: This record is specifically about the observed ControlActionUPP/MixedMode path; it does not assert a universal construction recipe for every UPP type.
+    evidence:
+      - {source_id: macsurf.commit.4cfdec52ae9acea693a62874702a18cbee74c2ca, role: origin}
+    tags: [carbonlib, upp, mixedmode, powerpc, callback, codewarrior, crash]
+    last_reviewed: "2026-09-16"
+
+  - id: carbonlib.newroutinedescriptor-availability-context-dependent
+    title: NewRoutineDescriptor linkage must be verified for the exact CarbonLib/UPP path
+    scope: project
+    state: unknown
+    validation_level: codewarrior_verified
+    statement: MacSurf history contains context-dependent evidence around `NewRoutineDescriptor`: one hardware-debugging round rejected raw ControlActionUPP substitution on the basis that CarbonLib expected a real MixedMode descriptor, while a later macLink build reported `NewAEEventHandlerUPP` expanding to `NewRoutineDescriptor` that was not exported by its local CarbonLib link environment. ClassicMacMCP must therefore query/verify the exact UPP macro expansion, SDK, libraries and target before recommending a construction strategy.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      architectures: [powerpc]
+      notes: Intentionally unresolved rather than flattening different UPP/link contexts into one rule.
+    evidence:
+      - {source_id: macsurf.commit.4cfdec52ae9acea693a62874702a18cbee74c2ca, role: context, note: ControlActionUPP hardware failure showed raw-pointer substitution was invalid in that path.}
+      - {source_id: macsurf.commit.3ec7e43f7e4cf45d6e161dffeceb5934430f818b, role: context, note: Later macLink build reported NewRoutineDescriptor unavailable for NewAEEventHandlerUPP expansion.}
+    tags: [carbonlib, upp, mixedmode, NewRoutineDescriptor, codewarrior, unresolved]
+    last_reviewed: "2026-09-16"
+
+  - id: carbonlib.tested-initopentransport-incontext-required
+    title: Tested CarbonLib build uses InitOpenTransportInContext rather than plain InitOpenTransport
+    scope: project
+    state: verified
+    validation_level: codewarrior_verified
+    statement: In the tested MacSurf CarbonLib environment, plain `InitOpenTransport` was not exported while `InitOpenTransportInContext` was the working initialization path. The project also supplied the missing `kInitOTForApplicationMask` constant locally for its old headers.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      projects: [macsurf]
+      notes: This is evidence for the tested CarbonLib/SDK combination, not a universal Open Transport API rule.
+    evidence:
+      - {source_id: macsurf.commit.6dee0cc55c5dee7ff681d7b22b9730c0a92423cc, role: origin}
+    tags: [carbonlib, open-transport, InitOpenTransportInContext, codewarrior, sdk]
+    last_reviewed: "2026-09-16"
+
+  - id: msl.macos9-posix-functions-may-require-project-shims
+    title: POSIX convenience functions must not be assumed present in the selected MSL C library
+    scope: project
+    state: verified
+    validation_level: codewarrior_verified
+    statement: MacSurf supplied project compatibility implementations of `strdup`, `strcasecmp`, and `strncasecmp` so it could link with `MSL_C_Carbon.Lib` plus the runtime library instead of depending on the broader MSL library that was problematic on that installation. CodeWarrior-targeted ports should treat such functions as library-capability questions, not assume modern/POSIX libc availability.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      projects: [macsurf]
+      notes: Exact function availability varies by selected MSL library/version; verify before adding a shim.
+    evidence:
+      - {source_id: macsurf.commit.0c50eb73a2b53626812ffb76b4cac4f3ebdaecf6, role: origin}
+      - {source_id: macsurf.commit.fc5b924fa040b9daa00cffe73538d6052e0cd06d, role: context}
+    tags: [msl, libc, posix, strdup, strcasecmp, compatibility-shim, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: codewarrior.stale-build-binary-mtime-unchanged-is-failure-signal
+    title: Unchanged output identity after a source drop is a build failure signal
+    scope: workflow
+    state: verified
+    validation_level: hardware_verified
+    statement: The first-party MacSurf workflow demonstrated a false-success path where `Run project document 1` merely foregrounded an already-running application, diagnostics appeared clean, and the old binary was packaged under a new build number. Automation must verify that a source-changing build produces the expected new binary identity/mtime or another explicit build marker before packaging or testing it.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.58966603c818c16a37f56c2c1ac3ab1c5392b7b3, role: origin}
+    tags: [codewarrior, stale-build, artifact-identity, run, automation, false-success]
+    last_reviewed: "2026-09-16"
