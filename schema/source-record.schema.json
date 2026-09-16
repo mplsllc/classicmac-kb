@@ -4,9 +4,8 @@
   "title": "ClassicMac Source Record v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "id", "kind", "title", "locator", "redistribution", "trust"],
+  "required": ["id", "kind", "title", "locator", "redistribution", "trust"],
   "properties": {
-    "schema_version": {"const": 1},
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]+$"},
     "kind": {"enum": ["git_commit", "repository_file", "primary_documentation", "installed_toolchain", "hardware_experiment", "community_report"]},
     "title": {"type": "string"},
