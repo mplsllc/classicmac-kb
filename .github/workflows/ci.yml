@@ -43,12 +43,14 @@ jobs:
         working-directory: classicmac-kb
         run: pytest -q
 
-      - name: Build canonical plus full-history SQLite index
+      - name: Build canonical plus first-party evidence indexes
         working-directory: classicmac-kb
         run: |
           classicmac-kb-build \
             --git-repo mplsllc/macsurf="$GITHUB_WORKSPACE/sources/macsurf" \
-            --git-repo mplsllc/workflow="$GITHUB_WORKSPACE/sources/workflow"
+            --git-repo mplsllc/workflow="$GITHUB_WORKSPACE/sources/workflow" \
+            --document-repo mplsllc/macsurf="$GITHUB_WORKSPACE/sources/macsurf" \
+            --document-repo mplsllc/workflow="$GITHUB_WORKSPACE/sources/workflow"
 
       - name: Verify indexed corpus
         working-directory: classicmac-kb
@@ -64,13 +66,23 @@ jobs:
           workflow = db.execute(
               "select count(*) from git_commits where repository='mplsllc/workflow'"
           ).fetchone()[0]
-          print({"knowledge": knowledge, "sources": sources, "macsurf_commits": macsurf, "workflow_commits": workflow})
+          documents = db.execute("select count(*) from documents").fetchone()[0]
+          print({
+              "knowledge": knowledge,
+              "sources": sources,
+              "macsurf_commits": macsurf,
+              "workflow_commits": workflow,
+              "documents": documents,
+          })
           assert knowledge > 0
           assert sources > 0
           assert macsurf > 0
           assert workflow > 0
-          hit = db.execute(
-              "select sha, subject from git_fts where git_fts match 'CodeWarrior' limit 1"
-          ).fetchone()
-          assert hit is not None
+          assert documents > 0
+          assert db.execute(
+              "select sha from git_fts where git_fts match 'CodeWarrior' limit 1"
+          ).fetchone() is not None
+          assert db.execute(
+              "select path from document_fts where document_fts match 'CodeWarrior' limit 1"
+          ).fetchone() is not None
           PY
