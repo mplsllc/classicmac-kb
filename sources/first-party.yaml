@@ -67,7 +67,7 @@ sources:
 
   - id: workflow.build-diagnostics
     kind: repository_file
-    title: Build Diagnostics: Text First
+    title: "Build Diagnostics: Text First"
     locator: {repository: mplsllc/workflow, path: playbook/06-build-diagnostics.md}
     redistribution: metadata_only
     trust: first_party_verified
