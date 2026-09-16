@@ -4,84 +4,86 @@ sources:
     kind: repository_file
     title: CodeWarrior 8.3 Capability Matrix
     locator: {repository: mplsllc/workflow, path: catalog/cw8-8.3-capability-matrix.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
+    notes: Private first-party source; public KB records contain only promoted claims and provenance metadata.
 
   - id: workflow.appleevent-dictionary.cw8
     kind: repository_file
     title: CodeWarrior 8 AppleEvent Dictionary Inventory
     locator: {repository: mplsllc/workflow, path: catalog/cw8-appleevent-dictionary-inventory.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
+    notes: Private first-party source; raw contents are not part of the public corpus.
 
   - id: workflow.dictionary-discovery
     kind: repository_file
     title: Dictionary Discovery and Validation Protocol
     locator: {repository: mplsllc/workflow, path: catalog/dictionary-discovery-protocol.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.capability-coverage
     kind: repository_file
     title: CodeWarrior Capability Coverage Register
     locator: {repository: mplsllc/workflow, path: catalog/capability-coverage-register.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.cli-audit.cw8-8.3
     kind: repository_file
     title: CodeWarrior CLI / ToolServer Audit
     locator: {repository: mplsllc/workflow, path: catalog/codewarrior-cli-toolserver-audit.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.automation-model
     kind: repository_file
     title: Automation Model
     locator: {repository: mplsllc/workflow, path: playbook/01-automation-model.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.porting-checklist
     kind: repository_file
     title: Porting Checklist
     locator: {repository: mplsllc/workflow, path: playbook/03-porting-checklist.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.dictionary-applescript
     kind: repository_file
     title: Dictionary-driven AppleScript
     locator: {repository: mplsllc/workflow, path: playbook/04-dictionary-driven-applescript.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.gui-automation
     kind: repository_file
     title: GUI Automation
     locator: {repository: mplsllc/workflow, path: playbook/05-gui-automation.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.build-diagnostics
     kind: repository_file
     title: Build Diagnostics: Text First
     locator: {repository: mplsllc/workflow, path: playbook/06-build-diagnostics.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.operational-discipline
     kind: repository_file
     title: Operational Discipline
     locator: {repository: mplsllc/workflow, path: playbook/07-operational-discipline.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: workflow.project-config-template
     kind: repository_file
     title: Project Automation Configuration Template
     locator: {repository: mplsllc/workflow, path: templates/project-config.example.md}
-    redistribution: public
+    redistribution: metadata_only
     trust: first_party_verified
 
   - id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb
