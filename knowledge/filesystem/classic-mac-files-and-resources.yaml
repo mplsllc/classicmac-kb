@@ -5,10 +5,10 @@ records:
     scope: toolchain
     state: verified
     validation_level: codewarrior_verified
-    statement: On the tested CodeWarrior/HFS environment, project headers whose names differed from Apple SDK headers only by case (for example `events.h` vs `Events.h`) could be found first through recursive access-path search and shadow the intended Carbon header. A full rebuild exposed failures that cached object files had hidden.
+    statement: On the tested CodeWarrior 8.3/HFS environment, project headers whose names differed from Apple SDK headers only by case (for example `events.h` vs `Events.h`) could be found first through recursive access-path search and shadow the intended Carbon header. A full rebuild exposed failures that cached object files had hidden.
     applicability:
       toolchain_family: codewarrior
-      toolchain_versions: ["8.x"]
+      toolchain_versions: ["8.3"]
       os_family: classic-mac-os
       architectures: [powerpc]
       notes: The exact collision set is project-specific; the reusable rule is to audit case-folded header basenames across recursively reachable access paths and SDK headers.
@@ -66,10 +66,10 @@ records:
     scope: workflow
     state: observed
     validation_level: codewarrior_verified
-    statement: A CodeWarrior project can keep required Classic Mac resources in Rez text (`.r`) under normal source control and let CodeWarrior compile them into the application's resource fork at link time. This avoids treating a binary resource fork as the only editable source of truth.
+    statement: A CodeWarrior 8.3 project can keep required Classic Mac resources in Rez text (`.r`) under normal source control and let CodeWarrior compile them into the application's resource fork at link time. This avoids treating a binary resource fork as the only editable source of truth.
     applicability:
       toolchain_family: codewarrior
-      toolchain_versions: ["8.x"]
+      toolchain_versions: ["8.3"]
       architectures: [powerpc]
       projects: [maclink, macsurf]
     evidence:
@@ -83,10 +83,10 @@ records:
     scope: project
     state: verified
     validation_level: hardware_verified
-    statement: In MacSurf's build, Finder icon-family/BNDL/FREF resources live in the resource fork, while file type and creator are set on the built application by CodeWarrior project/link settings. Resource-fork contents alone do not establish the file's on-disk type/creator metadata.
+    statement: In MacSurf's CodeWarrior 8.3 build, Finder icon-family/BNDL/FREF resources live in the resource fork, while file type and creator are set on the built application by CodeWarrior project/link settings. Resource-fork contents alone do not establish the file's on-disk type/creator metadata.
     applicability:
       toolchain_family: codewarrior
-      toolchain_versions: ["8.x"]
+      toolchain_versions: ["8.3"]
       projects: [macsurf]
     evidence:
       - {source_id: macsurf.commit.651bd14cb9414837ac1ff01a0e275cffe94ddf9a, role: origin}
@@ -98,10 +98,10 @@ records:
     scope: workflow
     state: verified
     validation_level: hardware_verified
-    statement: In the tested MacSurf environment, a colon-relative path used through MSL stdio did not persist the cookie jar where intended, while a full resolved HFS path did. File-path behavior using MSL stdio should be verified on the target and, where appropriate, compared with direct FSSpec/File Manager I/O rather than assumed from modern POSIX behavior.
+    statement: In the tested MacSurf/CodeWarrior 8.3 environment, a colon-relative path used through MSL stdio did not persist the cookie jar where intended, while a full resolved HFS path did. File-path behavior using MSL stdio should be verified on the target and, where appropriate, compared with direct FSSpec/File Manager I/O rather than assumed from modern POSIX behavior.
     applicability:
       toolchain_family: codewarrior
-      toolchain_versions: ["8.x"]
+      toolchain_versions: ["8.3"]
       projects: [macsurf]
     evidence:
       - {source_id: macsurf.commit.a4b425b99765f7037e1255a0570587dcba3bf9ab, role: origin}
