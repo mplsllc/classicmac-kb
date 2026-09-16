@@ -1,0 +1,165 @@
+schema_version: 1
+records:
+  - id: cw8.8.3.update-project-is-bring-up-to-date
+    title: Update Project is the verified Bring Up To Date operation
+    scope: toolchain
+    state: verified
+    validation_level: hardware_verified
+    statement: On the tested CodeWarrior Pro 8.3 environment, the AppleEvent command `Update Project` is the verified project-aware Bring Up To Date build operation. `Run project document 1` is a launch operation and must not be used as a substitute when the application is already running.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+      notes: Verified against the current first-party remote build environment; other CodeWarrior releases require their own capability record.
+    evidence:
+      - {source_id: workflow.automation-model, role: supports}
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+    tags: [codewarrior, appleevent, build, update-project, bring-up-to-date]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.run-is-launch
+    title: Run is a launch operation, not the authoritative build gate
+    scope: toolchain
+    state: verified
+    validation_level: hardware_verified
+    statement: `Run project document 1` launches the active CodeWarrior project. The safe automated sequence performs Update Project, checks live diagnostics and output identity, then invokes Run and confirms the intended application process starts.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+    evidence:
+      - {source_id: workflow.automation-model, role: supports}
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+    tags: [codewarrior, launch, run, build-pipeline]
+    related: [cw8.8.3.update-project-is-bring-up-to-date]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.appleevent-timeout-build-continues
+    title: AppleEvent timeout does not prove a long CodeWarrior build stopped
+    scope: toolchain
+    state: verified
+    validation_level: hardware_verified
+    statement: A large CodeWarrior build can exceed the default AppleEvent timeout and return error -1712 while CodeWarrior continues building. Automation must treat timeout as ambiguous state, query process/project state before retrying, and use an explicit long timeout for known long builds.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+      notes: Observed with a roughly 925-file rebuild; the principle that timeout does not prove cancellation is also retained as a workflow record.
+    evidence:
+      - {source_id: macsurf.commit.379281f004219895423bb9e059c4ac1a944573c5, role: origin}
+      - {source_id: workflow.operational-discipline, role: supports}
+    tags: [codewarrior, appleevent, timeout, build, recovery]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.add-files-noerr-no-effect
+    title: Direct Add Files AppleEvent is broken on the tested Tiger target
+    scope: machine
+    state: incompatible
+    validation_level: hardware_verified
+    statement: On the tested Tiger-hosted CodeWarrior 8.3 installation, direct Add Files AppleEvent forms returned success/noErr yet changed neither project file count nor the project on disk. GUI `Project > Add Files…` is the verified fallback for adding files.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+      notes: Do not generalize this failure to all CodeWarrior/OS combinations without testing.
+    evidence:
+      - {source_id: macsurf.commit.36160dbda1cbe6ae5981377a5ba2bf3ce2113c02, role: origin}
+      - {source_id: macsurf.commit.4c48b04cbce9266f8c5cf5218cbb80912d903a5e, role: supports}
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+    tags: [codewarrior, appleevent, project-membership, add-files, tiger, gui-fallback]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.remove-files-verified
+    title: Remove Files AppleEvent is verified on the tested CW8.3 target
+    scope: machine
+    state: verified
+    validation_level: hardware_verified
+    statement: `Remove Files {file "Volume:Path:File.c"}` is a working CodeWarrior project-membership mutation on the tested target. Automation must confirm the postcondition, such as project file-count change, after mutation.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+    evidence:
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+      - {source_id: macsurf.commit.36160dbda1cbe6ae5981377a5ba2bf3ce2113c02, role: supports}
+    tags: [codewarrior, appleevent, project-membership, remove-files]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.dictionary-entry-not-behavior-proof
+    title: CodeWarrior dictionary presence is not proof an operation works
+    scope: toolchain
+    state: decision
+    validation_level: codewarrior_verified
+    statement: An operation or property appearing in CodeWarrior's installed AETE dictionary is classified as discovered/documented, not verified. Promotion to verified requires a controlled probe with an observable postcondition and preserved failure behavior.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      notes: This is the governing evidence policy for the first-party CW8.3 catalog.
+    evidence:
+      - {source_id: workflow.dictionary-discovery, role: origin}
+      - {source_id: workflow.capability-coverage, role: supports}
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+    tags: [codewarrior, aete, appleevent, evidence, capability-discovery]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.errors-window-text-export
+    title: CodeWarrior Errors & Warnings text export is the primary build diagnostic
+    scope: toolchain
+    state: verified
+    validation_level: hardware_verified
+    statement: `Save Error Window As` is verified on the target and produces retrievable plain-text compiler/linker diagnostics. Build automation should preserve that text and stop before launch or packaging on blocking diagnostics instead of relying primarily on screenshots.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+      notes: A short HFS-safe temporary leaf name is required because the legacy alias conversion rejected a long generated filename with error -37 even though Tiger permits it at the filesystem layer.
+    evidence:
+      - {source_id: workflow.build-diagnostics, role: origin}
+    tags: [codewarrior, diagnostics, compiler-errors, linker-errors, evidence]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.no-standalone-cli-installed
+    title: Current iMac has no installed standalone CodeWarrior compiler CLI
+    scope: machine
+    state: verified
+    validation_level: hardware_verified
+    statement: The tested iMac environment has no installed `cwctl`, `mwcc`, `mwld`, `ToolServer`, or `toolserver` executable available as a standalone command-line build path. The `MW C-C++ PPC` and linker items in the CodeWarrior installation are IDE plug-ins and must not be treated as Unix compiler drivers.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      machines: [imac-g3-tiger]
+      notes: This describes the current machine inventory, not every CodeWarrior installation.
+    evidence:
+      - {source_id: workflow.cli-audit.cw8-8.3, role: origin}
+    tags: [codewarrior, cli, toolserver, compiler-plugin, machine-inventory]
+    last_reviewed: "2026-09-16"
+
+  - id: cw8.8.3.xml-import-gui-verified
+    title: CodeWarrior XML to native MCP import is hardware verified through GUI automation
+    scope: machine
+    state: verified
+    validation_level: hardware_verified
+    statement: The tested environment can create a native `.mcp` project by driving `File > Import Project…` through GUI automation. The XML file requires the expected HFS metadata (TEXT/CWIE) before import. This is the verified project-bootstrap path where direct AppleEvent support is absent.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.3"]
+      os_family: mac-os-x
+      os_versions: ["10.4.11"]
+      machines: [imac-g3-tiger]
+    evidence:
+      - {source_id: workflow.capability-coverage, role: supports}
+      - {source_id: workflow.capability-matrix.cw8-8.3, role: supports}
+    tags: [codewarrior, xml, mcp, project-import, gui-automation, hfs-metadata]
+    last_reviewed: "2026-09-16"
