@@ -1,0 +1,225 @@
+schema_version: 1
+sources:
+  - id: workflow.capability-matrix.cw8-8.3
+    kind: repository_file
+    title: CodeWarrior 8.3 Capability Matrix
+    locator: {repository: mplsllc/workflow, path: catalog/cw8-8.3-capability-matrix.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.appleevent-dictionary.cw8
+    kind: repository_file
+    title: CodeWarrior 8 AppleEvent Dictionary Inventory
+    locator: {repository: mplsllc/workflow, path: catalog/cw8-appleevent-dictionary-inventory.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.dictionary-discovery
+    kind: repository_file
+    title: Dictionary Discovery and Validation Protocol
+    locator: {repository: mplsllc/workflow, path: catalog/dictionary-discovery-protocol.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.capability-coverage
+    kind: repository_file
+    title: CodeWarrior Capability Coverage Register
+    locator: {repository: mplsllc/workflow, path: catalog/capability-coverage-register.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.cli-audit.cw8-8.3
+    kind: repository_file
+    title: CodeWarrior CLI / ToolServer Audit
+    locator: {repository: mplsllc/workflow, path: catalog/codewarrior-cli-toolserver-audit.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.automation-model
+    kind: repository_file
+    title: Automation Model
+    locator: {repository: mplsllc/workflow, path: playbook/01-automation-model.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.porting-checklist
+    kind: repository_file
+    title: Porting Checklist
+    locator: {repository: mplsllc/workflow, path: playbook/03-porting-checklist.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.dictionary-applescript
+    kind: repository_file
+    title: Dictionary-driven AppleScript
+    locator: {repository: mplsllc/workflow, path: playbook/04-dictionary-driven-applescript.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.gui-automation
+    kind: repository_file
+    title: GUI Automation
+    locator: {repository: mplsllc/workflow, path: playbook/05-gui-automation.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.build-diagnostics
+    kind: repository_file
+    title: Build Diagnostics: Text First
+    locator: {repository: mplsllc/workflow, path: playbook/06-build-diagnostics.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.operational-discipline
+    kind: repository_file
+    title: Operational Discipline
+    locator: {repository: mplsllc/workflow, path: playbook/07-operational-discipline.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: workflow.project-config-template
+    kind: repository_file
+    title: Project Automation Configuration Template
+    locator: {repository: mplsllc/workflow, path: templates/project-config.example.md}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb
+    kind: git_commit
+    title: CW8 C89 declaration-order failure and negative-control gate
+    locator: {repository: mplsllc/macsurf, sha: 51cf3e19d393d104d978bbc8eacc13a070be4beb}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.c2b10babc36325ff72d2f9542165c393f9e35d39
+    kind: git_commit
+    title: CW8 rejects const qualifier drop missed by host GCC checks
+    locator: {repository: mplsllc/macsurf, sha: c2b10babc36325ff72d2f9542165c393f9e35d39}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.f09e4c1b0be0fab0b35a7467ca674358f8e66b38
+    kind: git_commit
+    title: CW8 full rebuild exposes case-insensitive header collisions
+    locator: {repository: mplsllc/macsurf, sha: f09e4c1b0be0fab0b35a7467ca674358f8e66b38}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.68ecb3ef6fc093f1a32e21de867f386e11982ce9
+    kind: git_commit
+    title: MSL has no alloca.h in the tested CW8 environment
+    locator: {repository: mplsllc/macsurf, sha: 68ecb3ef6fc093f1a32e21de867f386e11982ce9}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.45d4d9b36cddbd6f4d838ac04cd4e875bc9f1d4f
+    kind: git_commit
+    title: MSL time.h conflicts with project-provided struct tm
+    locator: {repository: mplsllc/macsurf, sha: 45d4d9b36cddbd6f4d838ac04cd4e875bc9f1d4f}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.5bf5a125628c4e70763648faa00975d348114750
+    kind: git_commit
+    title: MacTypes bool/true/false include-order conflict under CodeWarrior
+    locator: {repository: mplsllc/macsurf, sha: 5bf5a125628c4e70763648faa00975d348114750}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.379281f004219895423bb9e059c4ac1a944573c5
+    kind: git_commit
+    title: Long CodeWarrior AppleEvent builds can exceed default timeout while continuing
+    locator: {repository: mplsllc/macsurf, sha: 379281f004219895423bb9e059c4ac1a944573c5}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.36160dbda1cbe6ae5981377a5ba2bf3ce2113c02
+    kind: git_commit
+    title: Add Files AppleEvent returns noErr without changing project state on tested target
+    locator: {repository: mplsllc/macsurf, sha: 36160dbda1cbe6ae5981377a5ba2bf3ce2113c02}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.4c48b04cbce9266f8c5cf5218cbb80912d903a5e
+    kind: git_commit
+    title: Tiger CodeWarrior file-add path failure and GUI fallback evidence
+    locator: {repository: mplsllc/macsurf, sha: 4c48b04cbce9266f8c5cf5218cbb80912d903a5e}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.e4d3a8deeff004fb200d44480894a0845744470c
+    kind: git_commit
+    title: Automated Linux-to-CodeWarrior-to-artifact pipeline documentation
+    locator: {repository: mplsllc/macsurf, sha: e4d3a8deeff004fb200d44480894a0845744470c}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: macsurf.commit.5da905bf3c090ad36aa81a82e00a4807ec716579
+    kind: git_commit
+    title: Text line-ending verification and binary-transfer exception
+    locator: {repository: mplsllc/macsurf, sha: 5da905bf3c090ad36aa81a82e00a4807ec716579}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.651bd14cb9414837ac1ff01a0e275cffe94ddf9a
+    kind: git_commit
+    title: Classic Mac icon/resource fork pipeline and type/creator separation
+    locator: {repository: mplsllc/macsurf, sha: 651bd14cb9414837ac1ff01a0e275cffe94ddf9a}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.6c9f370c499f69e963922eb0569b1cc598db5b17
+    kind: git_commit
+    title: Binary resource fork must bypass text CR conversion
+    locator: {repository: mplsllc/macsurf, sha: 6c9f370c499f69e963922eb0569b1cc598db5b17}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.a558969806e20a0c884f053d89af719d035fe513
+    kind: git_commit
+    title: Rez source as source-controlled resource definition
+    locator: {repository: mplsllc/macsurf, sha: a558969806e20a0c884f053d89af719d035fe513}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.a4b425b99765f7037e1255a0570587dcba3bf9ab
+    kind: git_commit
+    title: Full HFS path required for reliable tested MSL stdio persistence
+    locator: {repository: mplsllc/macsurf, sha: a4b425b99765f7037e1255a0570587dcba3bf9ab}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.119baf604ac52d41cb47f77473cba6e867f4fb41
+    kind: git_commit
+    title: FSSpec binary I/O used for persistent history store
+    locator: {repository: mplsllc/macsurf, sha: 119baf604ac52d41cb47f77473cba6e867f4fb41}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.fc5b924fa040b9daa00cffe73538d6052e0cd06d
+    kind: git_commit
+    title: Corrected CodeWarrior Pro 8.3 project setup and MSL library names
+    locator: {repository: mplsllc/macsurf, sha: fc5b924fa040b9daa00cffe73538d6052e0cd06d}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.0eb0a5736ab425b18470fecc0437022920fa4882
+    kind: git_commit
+    title: AI workflow records CW8 and real-hardware acceptance boundary
+    locator: {repository: mplsllc/macsurf, sha: 0eb0a5736ab425b18470fecc0437022920fa4882}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: macsurf.commit.9fb75ae6d297e58ef5590c4476426c670e9cbb6c
+    kind: git_commit
+    title: Frozen non-destructive AppleEvent diagnostic snapshot interface
+    locator: {repository: mplsllc/macsurf, sha: 9fb75ae6d297e58ef5590c4476426c670e9cbb6c}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.7635a61596c69446b06ed3e0744f2de1a5fff482
+    kind: git_commit
+    title: Classic Mac high-level event dispatch and AppleEvent handler installation
+    locator: {repository: mplsllc/macsurf, sha: 7635a61596c69446b06ed3e0744f2de1a5fff482}
+    redistribution: public
+    trust: controlled_observation
