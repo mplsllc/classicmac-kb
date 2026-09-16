@@ -10,12 +10,12 @@ from classicmac_kb_tools.document_index import DocumentRepo, index_documents
 
 def _write_schema(root: Path) -> None:
     (root / "schema").mkdir(parents=True)
-    # Use compact test schemas; production schemas are exercised by the repository build.
+    # Use compact test schemas; grouped YAML documents own schema_version.
     (root / "schema" / "source-record.schema.json").write_text(
         r'''{
           "$schema":"https://json-schema.org/draft/2020-12/schema",
           "type":"object",
-          "required":["schema_version","id","kind","title","locator","redistribution","trust"]
+          "required":["id","kind","title","locator","redistribution","trust"]
         }''',
         encoding="utf-8",
     )
@@ -23,7 +23,7 @@ def _write_schema(root: Path) -> None:
         r'''{
           "$schema":"https://json-schema.org/draft/2020-12/schema",
           "type":"object",
-          "required":["schema_version","id","title","scope","state","validation_level","statement","applicability","evidence","tags"]
+          "required":["id","title","scope","state","validation_level","statement","applicability","evidence","tags"]
         }''',
         encoding="utf-8",
     )
