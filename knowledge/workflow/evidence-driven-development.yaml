@@ -1,0 +1,107 @@
+schema_version: 1
+records:
+  - id: workflow.codewarrior.serialize-controller
+    title: Serialize operations against a vintage IDE/project
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Only one controller should manipulate a given CodeWarrior project/GUI event loop at a time. Build, project mutation, diagnostics and GUI automation require an explicit lock; independent machines may execute concurrently when their transports and targets are independent.
+    applicability:
+      toolchain_family: codewarrior
+      notes: Derived from the first-party CW8 remote automation workflow and intended as the default ClassicMacMCP policy for stateful vintage IDEs.
+    evidence:
+      - {source_id: workflow.operational-discipline, role: origin}
+    tags: [workflow, locking, concurrency, codewarrior, remote-development]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.identity-before-mutation
+    title: Establish machine, IDE, project and target identity before mutation
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Before a build, target switch, project-file mutation or cleanup, record the remote machine/OS, IDE fingerprint, exact open project path, current target, expected output path and pre-operation output identity. Do not rely on `project document 1` until it has been positively identified.
+    applicability:
+      toolchain_family: codewarrior
+    evidence:
+      - {source_id: workflow.operational-discipline, role: origin}
+      - {source_id: workflow.project-config-template, role: supports}
+    tags: [workflow, identity, safety, codewarrior, project]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.stage-separation
+    title: Keep transfer, build, diagnostics, launch, packaging and hardware test as separate gates
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Remote Classic Mac development stages must fail independently. A transfer failure stops the build; blocking build diagnostics stop launch/packaging; launch failure stops test automation. Combining stages hides causality and creates false acceptance.
+    applicability:
+      notes: Generalized from the first-party CodeWarrior workflow; individual project policies may add gates but should not collapse them.
+    evidence:
+      - {source_id: workflow.automation-model, role: origin}
+    tags: [workflow, build-pipeline, gates, evidence, failure-isolation]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.timeout-is-ambiguous-state
+    title: A timed-out state-changing operation must not be blindly retried
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Timeout means the caller stopped waiting; it does not prove the vintage IDE or target stopped executing. Before retrying a mutating operation, query authoritative machine/project/process state and determine whether the original operation is still active or completed.
+    applicability: {}
+    evidence:
+      - {source_id: workflow.operational-discipline, role: origin}
+      - {source_id: macsurf.commit.379281f004219895423bb9e059c4ac1a944573c5, role: supports}
+    tags: [workflow, timeout, idempotence, recovery, safety]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.success-code-requires-postcondition
+    title: A successful automation return requires an observed postcondition
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Do not infer that an IDE mutation occurred merely because an AppleEvent or automation command returned success. Verify the intended state transition independently, such as file count, target identity, binary mtime/checksum, process state or another authoritative property.
+    applicability: {}
+    evidence:
+      - {source_id: workflow.dictionary-discovery, role: supports}
+      - {source_id: macsurf.commit.36160dbda1cbe6ae5981377a5ba2bf3ce2113c02, role: origin}
+    tags: [workflow, postcondition, appleevent, false-success, evidence]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.preserve-attempt-bundle
+    title: Preserve one evidence bundle per build/test attempt
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: Each meaningful build/test attempt should retain source revision and intent, transfer verification, build request/output, compiler/linker diagnostics, before/after artifact identity, launch result and the minimal runtime logs/captures needed to support conclusions.
+    applicability: {}
+    evidence:
+      - {source_id: workflow.operational-discipline, role: origin}
+    tags: [workflow, provenance, evidence, diagnostics, reproducibility]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.recovery-authoritative-signals-first
+    title: Recover from text/state before screenshots or blind GUI retries
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: On automation failure, inspect command status/text, CodeWarrior project messages/error export, process/path/output identity and named accessibility state before falling back to screenshots. Screenshots supplement machine-readable evidence rather than replace it.
+    applicability:
+      toolchain_family: codewarrior
+    evidence:
+      - {source_id: workflow.operational-discipline, role: origin}
+      - {source_id: workflow.build-diagnostics, role: supports}
+    tags: [workflow, recovery, diagnostics, screenshots, evidence]
+    last_reviewed: "2026-09-16"
+
+  - id: workflow.hardware-is-separate-validation-level
+    title: Compiler success and hardware behavior are separate evidence levels
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: A host/static or Retro68 pass does not establish CodeWarrior compatibility; a CodeWarrior build does not establish runtime correctness. Hardware acceptance must be recorded separately and conclusions must state the strongest level actually reached.
+    applicability: {}
+    evidence:
+      - {source_id: macsurf.commit.0eb0a5736ab425b18470fecc0437022920fa4882, role: origin}
+      - {source_id: workflow.operational-discipline, role: supports}
+    tags: [workflow, hardware, validation, codewarrior, retro68, evidence-levels]
+    last_reviewed: "2026-09-16"
