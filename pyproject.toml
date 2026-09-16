@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "classicmac-kb-tools"
+version = "0.1.0"
+description = "Validation and SQLite indexing tools for the ClassicMac knowledge base"
+requires-python = ">=3.11"
+dependencies = [
+  "PyYAML>=6.0.2",
+  "jsonschema>=4.25.0",
+]
+
+[project.scripts]
+classicmac-kb-build = "classicmac_kb_tools.build_index:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/classicmac_kb_tools"]
