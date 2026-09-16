@@ -12,8 +12,16 @@ dependencies = [
   "jsonschema>=4.25.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<9",
+]
+
 [project.scripts]
 classicmac-kb-build = "classicmac_kb_tools.build_index:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/classicmac_kb_tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
