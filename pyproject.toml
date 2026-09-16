@@ -18,7 +18,7 @@ dev = [
 ]
 
 [project.scripts]
-classicmac-kb-build = "classicmac_kb_tools.build_index:main"
+classicmac-kb-build = "classicmac_kb_tools.build_all:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/classicmac_kb_tools"]
