@@ -1,0 +1,46 @@
+schema_version: 1
+records:
+  - id: testing.negative-control-gates
+    title: A compatibility gate must prove it can fail on the known bad case
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: A green compatibility check is not meaningful until the known incompatible construct is deliberately reinstated and the gate is shown to reject it. MacSurf's first declaration-order gate falsely passed because inherited `-w` disabled the warning; the negative control exposed the false green.
+    applicability:
+      language: c
+      language_standard: c89
+    evidence:
+      - {source_id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb, role: origin}
+    tags: [testing, negative-control, false-green, c89, compatibility-gate]
+    last_reviewed: "2026-09-16"
+
+  - id: testing.retro68-preflight-not-authority
+    title: Retro68/GCC preflight is predictive, not authoritative for CodeWarrior projects
+    scope: workflow
+    state: decision
+    validation_level: codewarrior_verified
+    statement: Retro68 and host compiler checks should catch cheap language/target problems before remote build, but CodeWarrior remains the authoritative compiler for a CodeWarrior project. Every Retro68-pass/CW8-fail or Retro68-fail/CW8-pass discrepancy should become a preserved compiler-difference fixture or compatibility rule.
+    applicability:
+      toolchain_family: codewarrior
+      language: c
+      language_standard: c89
+    evidence:
+      - {source_id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb, role: supports}
+      - {source_id: macsurf.commit.c2b10babc36325ff72d2f9542165c393f9e35d39, role: supports}
+    tags: [retro68, codewarrior, preflight, differential-testing, compiler-difference]
+    related: [c89.host-gnu99-can-false-green, c89.cw8.const-qualification-stricter-than-tested-gcc]
+    last_reviewed: "2026-09-16"
+
+  - id: testing.full-rebuild-is-distinct-gate
+    title: Incremental and clean CodeWarrior builds test different conditions
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: An incremental build can retain objects compiled under older include/access-path state; a clean rebuild forces all translation units through the current compiler and project configuration. Significant toolchain/access-path changes therefore require a deliberate clean-build gate rather than relying only on incremental success.
+    applicability:
+      toolchain_family: codewarrior
+    evidence:
+      - {source_id: macsurf.commit.f09e4c1b0be0fab0b35a7467ca674358f8e66b38, role: origin}
+    tags: [testing, codewarrior, clean-build, incremental-build, object-cache]
+    related: [build.cached-objects-can-mask-current-include-resolution]
+    last_reviewed: "2026-09-16"
