@@ -1,0 +1,120 @@
+schema_version: 1
+records:
+  - id: c89.cw8.declarations-before-statements
+    title: Declarations must precede statements in C89 blocks
+    scope: toolchain
+    state: verified
+    validation_level: codewarrior_verified
+    statement: CodeWarrior 8 rejected a function where an executable statement appeared before the block's declarations. For the strict C89 project profile, declarations must be placed before statements within each block.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      language: c
+      language_standard: c89
+      notes: Directly observed on the project's CW8 compiler; version breadth beyond the tested CW8 installation is not inferred from this record.
+    evidence:
+      - {source_id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb, role: origin}
+    tags: [c89, codewarrior, declarations, compiler-error]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.host-gnu99-can-false-green
+    title: Host gnu99 builds can hide CodeWarrior C89 errors
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: A host harness compiling affected sources as GNU99 accepted mixed declarations that CodeWarrior rejected. Host checks must deliberately select compatibility diagnostics/standards rather than treating an ordinary green host build as evidence of CW8 compatibility.
+    applicability:
+      language: c
+      language_standard: c89
+      toolchain_family: codewarrior
+    evidence:
+      - {source_id: macsurf.commit.51cf3e19d393d104d978bbc8eacc13a070be4beb, role: origin}
+    tags: [c89, gcc, gnu99, false-green, codewarrior, preflight]
+    related: [c89.cw8.declarations-before-statements, testing.negative-control-gates]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.cw8.const-qualification-stricter-than-tested-gcc
+    title: CW8 caught a const-array qualifier loss missed by tested GCC warning sets
+    scope: toolchain
+    state: observed
+    validation_level: codewarrior_verified
+    statement: In a tested MacSurf change, CodeWarrior 8 rejected passing a const-qualified array member to a non-const array parameter while the existing GCC compatibility gates, including an additional tested warning set, stayed silent. Retro68/GCC preflight therefore cannot be assumed to model every CW8 type-system diagnostic.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      language: c
+      language_standard: c89
+      projects: [macsurf]
+      notes: Preserve this as a compiler-difference regression candidate; do not extrapolate the exact GCC behavior to all GCC versions/options.
+    evidence:
+      - {source_id: macsurf.commit.c2b10babc36325ff72d2f9542165c393f9e35d39, role: origin}
+    tags: [c89, const, arrays, compiler-difference, codewarrior, gcc, retro68]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.cw8.msl-no-alloca-header-tested
+    title: Tested CW8 MSL include paths do not provide alloca.h
+    scope: machine
+    state: verified
+    validation_level: codewarrior_verified
+    statement: In the tested CW8/MSL environment, `<alloca.h>` was not present even with the MSL include folders on the system access paths. Its absence left `alloca` undeclared under C89 and produced secondary implicit-int/pointer-conversion errors at call sites.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      language: c
+      language_standard: c89
+      machines: [imac-g3-cw8]
+      notes: This establishes the tested MSL header set, not every Metrowerks library release.
+    evidence:
+      - {source_id: macsurf.commit.68ecb3ef6fc093f1a32e21de867f386e11982ce9, role: origin}
+    tags: [c89, msl, alloca, headers, implicit-int, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.cw8.header-shims-prefer-boundary-over-upstream-edits
+    title: Missing compatibility headers can be supplied at the access-path boundary
+    scope: project
+    state: observed
+    validation_level: codewarrior_verified
+    statement: MacSurf successfully uses project-owned shim headers on an existing CodeWarrior access path to satisfy missing Unix/C library headers without rewriting upstream engine sources. This is a project pattern, not a claim that arbitrary shims are semantically safe.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      language: c
+      language_standard: c89
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.68ecb3ef6fc093f1a32e21de867f386e11982ce9, role: origin}
+    tags: [c89, shims, headers, access-paths, porting]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.cw8.mactypes-bool-include-order
+    title: Project bool definitions can conflict with MacTypes if introduced too early
+    scope: project
+    state: verified
+    validation_level: codewarrior_verified
+    statement: In MacSurf, defining bool/true/false before Mac Toolbox headers caused illegal enum expansion/conflict in MacTypes under CodeWarrior. The working project pattern defines its compatibility bool symbols only after the Mac Toolbox headers.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      language: c
+      language_standard: c89
+      projects: [macsurf]
+      notes: Scope remains project-specific until reproduced in a minimal standalone CW8 fixture.
+    evidence:
+      - {source_id: macsurf.commit.5bf5a125628c4e70763648faa00975d348114750, role: origin}
+    tags: [c89, bool, MacTypes, include-order, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: c89.cw8.msl-time-header-project-conflict
+    title: MSL time.h can conflict with a project-supplied struct tm
+    scope: project
+    state: verified
+    validation_level: codewarrior_verified
+    statement: MacSurf's project-provided `struct tm` collided with MSL's `<time.h>` when bare includes fell through to MSL. A project-level top-of-access-path interceptor avoided the redefinition. This record documents the observed conflict and should not be read as a general recommendation to replace MSL time.h.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.45d4d9b36cddbd6f4d838ac04cd4e875bc9f1d4f, role: origin}
+    tags: [c89, msl, time.h, struct-tm, headers, access-paths]
+    last_reviewed: "2026-09-16"
