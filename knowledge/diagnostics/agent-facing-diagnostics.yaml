@@ -1,0 +1,28 @@
+schema_version: 1
+records:
+  - id: diagnostics.snapshot-frozen-at-semantic-boundary
+    title: Serve diagnostics from frozen snapshots rather than live internal traversal
+    scope: workflow
+    state: observed
+    validation_level: hardware_verified
+    statement: MacSurf's on-demand AppleEvent diagnostics accumulate cheap counters during execution, freeze them at a semantic boundary (navigation completion), and serialize the frozen copy on request. This keeps diagnostic reads non-destructive and avoids traversing mutable live browser state while an external agent is querying it.
+    applicability:
+      projects: [macsurf]
+      notes: The specific navigation counters are project-specific; the reusable pattern is snapshot-at-boundary plus read-only external retrieval.
+    evidence:
+      - {source_id: macsurf.commit.9fb75ae6d297e58ef5590c4476426c670e9cbb6c, role: origin}
+    tags: [diagnostics, appleevent, snapshot, agent-interface, non-destructive, observability]
+    last_reviewed: "2026-09-16"
+
+  - id: diagnostics.machine-readable-before-log-reconstruction
+    title: Prefer explicit machine-readable diagnostic interfaces to reconstructing state from logs
+    scope: workflow
+    state: decision
+    validation_level: hardware_verified
+    statement: When target software can expose a bounded diagnostic interface, an agent should query structured state directly rather than infer current state from adjacency of log lines. Logs remain evidence, but a versioned query surface can provide stable semantic state with less ambiguity.
+    applicability: {}
+    evidence:
+      - {source_id: macsurf.commit.9fb75ae6d297e58ef5590c4476426c670e9cbb6c, role: origin}
+      - {source_id: workflow.build-diagnostics, role: supports}
+    tags: [diagnostics, structured-output, agent-interface, logs, evidence]
+    last_reviewed: "2026-09-16"
