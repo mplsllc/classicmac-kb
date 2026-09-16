@@ -1,0 +1,57 @@
+schema_version: 1
+sources:
+  - id: macsurf.commit.e1fe1ddfffec5d4587d7d35cd29f447fbd0c966c
+    kind: git_commit
+    title: Carbon compile-mode prefix ordering root cause
+    locator: {repository: mplsllc/macsurf, sha: e1fe1ddfffec5d4587d7d35cd29f447fbd0c966c}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.4cfdec52ae9acea693a62874702a18cbee74c2ca
+    kind: git_commit
+    title: Raw ControlActionUPP pointer caused hardware illegal-instruction crash
+    locator: {repository: mplsllc/macsurf, sha: 4cfdec52ae9acea693a62874702a18cbee74c2ca}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.3ec7e43f7e4cf45d6e161dffeceb5934430f818b
+    kind: git_commit
+    title: NewAEEventHandlerUPP/NewRoutineDescriptor CarbonLib linkage observation
+    locator: {repository: mplsllc/macsurf, sha: 3ec7e43f7e4cf45d6e161dffeceb5934430f818b}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.6dee0cc55c5dee7ff681d7b22b9730c0a92423cc
+    kind: git_commit
+    title: InitOpenTransport absent while InitOpenTransportInContext used on tested CarbonLib
+    locator: {repository: mplsllc/macsurf, sha: 6dee0cc55c5dee7ff681d7b22b9730c0a92423cc}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.0c50eb73a2b53626812ffb76b4cac4f3ebdaecf6
+    kind: git_commit
+    title: MSL library reduction after project POSIX compatibility stubs
+    locator: {repository: mplsllc/macsurf, sha: 0c50eb73a2b53626812ffb76b4cac4f3ebdaecf6}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.58966603c818c16a37f56c2c1ac3ab1c5392b7b3
+    kind: git_commit
+    title: Stale-build trap, CodeWarrior project edits, and hardware-bisect lessons
+    locator: {repository: mplsllc/macsurf, sha: 58966603c818c16a37f56c2c1ac3ab1c5392b7b3}
+    redistribution: public
+    trust: first_party_verified
+
+  - id: macsurf.commit.34e81b185575aff9260dfe0df2a058eb37953669
+    kind: git_commit
+    title: Mac-default compile configuration false-green gate
+    locator: {repository: mplsllc/macsurf, sha: 34e81b185575aff9260dfe0df2a058eb37953669}
+    redistribution: public
+    trust: controlled_observation
+
+  - id: macsurf.commit.fc5b924fa040b9daa00cffe73538d6052e0cd06d
+    kind: git_commit
+    title: Corrected CW8.3 setup, prefix-file and MSL library documentation
+    locator: {repository: mplsllc/macsurf, sha: fc5b924fa040b9daa00cffe73538d6052e0cd06d}
+    redistribution: public
+    trust: controlled_observation
