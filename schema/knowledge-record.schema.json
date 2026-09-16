@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://classicmac.dev/schema/knowledge-record-v1.json",
+  "title": "ClassicMac Knowledge Record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "title", "scope", "state", "validation_level", "statement", "applicability", "evidence", "tags"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "scope": {"enum": ["global", "platform", "architecture", "toolchain", "sdk", "machine", "project", "experiment", "workflow"]},
+    "state": {"enum": ["documented", "observed", "verified", "decision", "hypothesis", "disproved", "superseded", "unknown", "incompatible"]},
+    "validation_level": {"enum": ["static_verified", "retro68_verified", "codewarrior_verified", "hardware_verified"]},
+    "statement": {"type": "string", "minLength": 1},
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "toolchain_family": {"type": "string"},
+        "toolchain_versions": {"type": "array", "items": {"type": "string"}},
+        "language": {"type": "string"},
+        "language_standard": {"type": "string"},
+        "architectures": {"type": "array", "items": {"type": "string"}},
+        "os_family": {"type": "string"},
+        "os_versions": {"type": "array", "items": {"type": "string"}},
+        "projects": {"type": "array", "items": {"type": "string"}},
+        "machines": {"type": "array", "items": {"type": "string"}},
+        "notes": {"type": "string"}
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "role"],
+        "properties": {
+          "source_id": {"type": "string"},
+          "role": {"enum": ["supports", "contradicts", "origin", "supersedes", "context"]},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "related": {"type": "array", "items": {"type": "string"}},
+    "supersedes": {"type": "array", "items": {"type": "string"}},
+    "last_reviewed": {"type": "string", "format": "date"}
+  }
+}
