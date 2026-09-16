@@ -4,9 +4,8 @@
   "title": "ClassicMac Knowledge Record v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "id", "title", "scope", "state", "validation_level", "statement", "applicability", "evidence", "tags"],
+  "required": ["id", "title", "scope", "state", "validation_level", "statement", "applicability", "evidence", "tags"],
   "properties": {
-    "schema_version": {"const": 1},
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
     "title": {"type": "string", "minLength": 1},
     "scope": {"enum": ["global", "platform", "architecture", "toolchain", "sdk", "machine", "project", "experiment", "workflow"]},
