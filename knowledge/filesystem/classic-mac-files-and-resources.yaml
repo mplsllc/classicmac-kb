@@ -1,0 +1,110 @@
+schema_version: 1
+records:
+  - id: hfs.codewarrior.case-insensitive-header-shadowing
+    title: Case-insensitive HFS plus recursive access paths can shadow Apple headers
+    scope: toolchain
+    state: verified
+    validation_level: codewarrior_verified
+    statement: On the tested CodeWarrior/HFS environment, project headers whose names differed from Apple SDK headers only by case (for example `events.h` vs `Events.h`) could be found first through recursive access-path search and shadow the intended Carbon header. A full rebuild exposed failures that cached object files had hidden.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      os_family: classic-mac-os
+      architectures: [powerpc]
+      notes: The exact collision set is project-specific; the reusable rule is to audit case-folded header basenames across recursively reachable access paths and SDK headers.
+    evidence:
+      - {source_id: macsurf.commit.f09e4c1b0be0fab0b35a7467ca674358f8e66b38, role: origin}
+    tags: [hfs, case-insensitive, headers, access-paths, codewarrior, carbon, full-rebuild]
+    last_reviewed: "2026-09-16"
+
+  - id: build.cached-objects-can-mask-current-include-resolution
+    title: Cached object files can mask include-resolution problems until a clean rebuild
+    scope: workflow
+    state: verified
+    validation_level: codewarrior_verified
+    statement: An incremental CodeWarrior build can continue linking object files compiled under an older access-path/include-resolution state. Removing object code forces every translation unit to resolve headers under the current project configuration and can expose latent collisions. Clean rebuild failures should therefore be investigated as current source/project-state evidence, not dismissed as random cache breakage.
+    applicability:
+      toolchain_family: codewarrior
+    evidence:
+      - {source_id: macsurf.commit.f09e4c1b0be0fab0b35a7467ca674358f8e66b38, role: origin}
+    tags: [build, object-cache, headers, access-paths, clean-rebuild, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: transfer.text-line-endings-must-be-verified
+    title: Source transfer must verify target line endings
+    scope: workflow
+    state: verified
+    validation_level: hardware_verified
+    statement: The first-party CodeWarrior source-drop workflow converts text files to Classic Mac CR line endings and verifies the remote result. A transfer step is not accepted merely because SCP succeeded; the target bytes/line-ending contract must be checked.
+    applicability:
+      toolchain_family: codewarrior
+      projects: [macsurf]
+      notes: MacSurf's exact drop script requires LF count zero on the remote source file; other projects should declare their own text transfer contract.
+    evidence:
+      - {source_id: macsurf.commit.5da905bf3c090ad36aa81a82e00a4807ec716579, role: origin}
+      - {source_id: workflow.automation-model, role: supports}
+    tags: [transfer, line-endings, cr, scp, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: transfer.binary-resource-files-bypass-text-conversion
+    title: Binary resource-fork artifacts must bypass text conversion paths
+    scope: workflow
+    state: verified
+    validation_level: hardware_verified
+    statement: Binary Classic Mac resource artifacts such as a `.rsrc` file must not pass through a text source-drop path that CR-converts content. Transfer policy must distinguish text from binary/fork-bearing artifacts.
+    applicability:
+      projects: [macsurf]
+      notes: The general rule is binary-safe transport separation; the exact `.rsrc` path is MacSurf evidence.
+    evidence:
+      - {source_id: macsurf.commit.6c9f370c499f69e963922eb0569b1cc598db5b17, role: origin}
+      - {source_id: macsurf.commit.5da905bf3c090ad36aa81a82e00a4807ec716579, role: supports}
+    tags: [transfer, binary, resource-fork, line-endings, classic-mac]
+    last_reviewed: "2026-09-16"
+
+  - id: resources.rez-source-preferred-canonical-record
+    title: Rez text is a practical source-controlled canonical resource definition
+    scope: workflow
+    state: observed
+    validation_level: codewarrior_verified
+    statement: A CodeWarrior project can keep required Classic Mac resources in Rez text (`.r`) under normal source control and let CodeWarrior compile them into the application's resource fork at link time. This avoids treating a binary resource fork as the only editable source of truth.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      architectures: [powerpc]
+      projects: [maclink, macsurf]
+    evidence:
+      - {source_id: macsurf.commit.a558969806e20a0c884f053d89af719d035fe513, role: origin}
+      - {source_id: macsurf.commit.651bd14cb9414837ac1ff01a0e275cffe94ddf9a, role: supports}
+    tags: [rez, resources, resource-fork, source-control, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: resources.type-creator-not-resource-fork-only
+    title: Application type/creator metadata is distinct from icon/resource contents
+    scope: project
+    state: verified
+    validation_level: hardware_verified
+    statement: In MacSurf's build, Finder icon-family/BNDL/FREF resources live in the resource fork, while file type and creator are set on the built application by CodeWarrior project/link settings. Resource-fork contents alone do not establish the file's on-disk type/creator metadata.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.651bd14cb9414837ac1ff01a0e275cffe94ddf9a, role: origin}
+    tags: [resource-fork, finder, creator-code, file-type, icons, codewarrior]
+    last_reviewed: "2026-09-16"
+
+  - id: filesystem.msl-relative-paths-require-hardware-verification
+    title: Do not assume MSL stdio path semantics from POSIX intuition
+    scope: workflow
+    state: verified
+    validation_level: hardware_verified
+    statement: In the tested MacSurf environment, a colon-relative path used through MSL stdio did not persist the cookie jar where intended, while a full resolved HFS path did. File-path behavior using MSL stdio should be verified on the target and, where appropriate, compared with direct FSSpec/File Manager I/O rather than assumed from modern POSIX behavior.
+    applicability:
+      toolchain_family: codewarrior
+      toolchain_versions: ["8.x"]
+      projects: [macsurf]
+    evidence:
+      - {source_id: macsurf.commit.a4b425b99765f7037e1255a0570587dcba3bf9ab, role: origin}
+      - {source_id: macsurf.commit.119baf604ac52d41cb47f77473cba6e867f4fb41, role: context}
+    tags: [msl, paths, hfs, stdio, fsspec, filesystem]
+    last_reviewed: "2026-09-16"
