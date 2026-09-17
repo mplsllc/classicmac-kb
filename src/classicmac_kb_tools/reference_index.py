@@ -8,11 +8,13 @@ without committing or redistributing their contents.
 from __future__ import annotations
 
 import html
+import json
 import re
 import sqlite3
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
+from typing import Mapping
 
 
 _TEXT_SUFFIXES = {".txt", ".md", ".rst", ".adoc"}
@@ -27,6 +29,12 @@ class ReferenceRoot:
     name: str
     path: Path
     source_layer: str = "historical_reference"
+    source_id: str | None = None
+    vendor: str | None = None
+    revision: str | None = None
+    retrieval: str | None = None
+    applicability: Mapping[str, object] = field(default_factory=dict)
+    restrictions: Mapping[str, object] = field(default_factory=dict)
 
 
 class _HTMLTextExtractor(HTMLParser):
@@ -134,6 +142,12 @@ def _ensure_schema(db: sqlite3.Connection) -> None:
         CREATE TABLE reference_documents (
             corpus TEXT NOT NULL,
             source_layer TEXT NOT NULL,
+            source_id TEXT,
+            vendor TEXT,
+            revision TEXT,
+            retrieval TEXT,
+            applicability_json TEXT NOT NULL,
+            restrictions_json TEXT NOT NULL,
             path TEXT NOT NULL,
             title TEXT NOT NULL,
             content TEXT NOT NULL,
@@ -143,6 +157,12 @@ def _ensure_schema(db: sqlite3.Connection) -> None:
         CREATE VIRTUAL TABLE reference_fts USING fts5(
             corpus UNINDEXED,
             source_layer UNINDEXED,
+            source_id UNINDEXED,
+            vendor UNINDEXED,
+            revision UNINDEXED,
+            retrieval UNINDEXED,
+            applicability_json UNINDEXED,
+            restrictions_json UNINDEXED,
             path,
             title,
             content,
@@ -150,6 +170,7 @@ def _ensure_schema(db: sqlite3.Connection) -> None:
         );
 
         CREATE INDEX reference_path ON reference_documents(corpus, path);
+        CREATE INDEX reference_source_id ON reference_documents(source_id);
         """
     )
 
@@ -180,6 +201,12 @@ def index_references(database: Path, roots: list[ReferenceRoot]) -> int:
     try:
         _ensure_schema(db)
         for root in roots:
+            applicability_json = json.dumps(
+                dict(root.applicability), sort_keys=True, separators=(",", ":")
+            )
+            restrictions_json = json.dumps(
+                dict(root.restrictions), sort_keys=True, separators=(",", ":")
+            )
             for path, relative in _input_files(root):
                 loaded = _read_reference(path)
                 if loaded is None:
@@ -187,17 +214,32 @@ def index_references(database: Path, roots: list[ReferenceRoot]) -> int:
                 title, content = loaded
                 if not content:
                     continue
+                values = (
+                    root.name,
+                    root.source_layer,
+                    root.source_id,
+                    root.vendor,
+                    root.revision,
+                    root.retrieval,
+                    applicability_json,
+                    restrictions_json,
+                    relative,
+                    title,
+                    content,
+                )
                 db.execute(
                     """INSERT INTO reference_documents
-                       (corpus, source_layer, path, title, content)
-                       VALUES (?, ?, ?, ?, ?)""",
-                    (root.name, root.source_layer, relative, title, content),
+                       (corpus, source_layer, source_id, vendor, revision, retrieval,
+                        applicability_json, restrictions_json, path, title, content)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    values,
                 )
                 db.execute(
                     """INSERT INTO reference_fts
-                       (corpus, source_layer, path, title, content)
-                       VALUES (?, ?, ?, ?, ?)""",
-                    (root.name, root.source_layer, relative, title, content),
+                       (corpus, source_layer, source_id, vendor, revision, retrieval,
+                        applicability_json, restrictions_json, path, title, content)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    values,
                 )
                 count += 1
         db.commit()
