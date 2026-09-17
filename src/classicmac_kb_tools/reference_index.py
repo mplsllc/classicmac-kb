@@ -17,6 +17,7 @@ from pathlib import Path
 
 _TEXT_SUFFIXES = {".txt", ".md", ".rst", ".adoc"}
 _HTML_SUFFIXES = {".html", ".htm"}
+_SUPPORTED_SUFFIXES = _TEXT_SUFFIXES | _HTML_SUFFIXES
 _MAX_REFERENCE_BYTES = 2_000_000
 _WHITESPACE = re.compile(r"[ \t\r\f\v]+")
 
@@ -153,6 +154,22 @@ def _ensure_schema(db: sqlite3.Connection) -> None:
     )
 
 
+def _input_files(root: ReferenceRoot) -> list[tuple[Path, str]]:
+    path = root.path
+    if path.is_file():
+        if path.suffix.lower() not in _SUPPORTED_SUFFIXES:
+            raise ValueError(f"{root.name}: unsupported reference file type: {path}")
+        return [(path, path.name)]
+    if not path.is_dir():
+        raise ValueError(f"{root.name}: reference input does not exist: {path}")
+
+    result: list[tuple[Path, str]] = []
+    for candidate in sorted(path.rglob("*")):
+        if candidate.is_file() and candidate.suffix.lower() in _SUPPORTED_SUFFIXES:
+            result.append((candidate, candidate.relative_to(path).as_posix()))
+    return result
+
+
 def index_references(database: Path, roots: list[ReferenceRoot]) -> int:
     """Replace the optional historical/vendor reference index."""
 
@@ -163,20 +180,13 @@ def index_references(database: Path, roots: list[ReferenceRoot]) -> int:
     try:
         _ensure_schema(db)
         for root in roots:
-            if not root.path.is_dir():
-                raise ValueError(f"{root.name}: reference root is not a directory: {root.path}")
-            for path in sorted(root.path.rglob("*")):
-                if not path.is_file():
-                    continue
-                if path.suffix.lower() not in (_TEXT_SUFFIXES | _HTML_SUFFIXES):
-                    continue
+            for path, relative in _input_files(root):
                 loaded = _read_reference(path)
                 if loaded is None:
                     continue
                 title, content = loaded
                 if not content:
                     continue
-                relative = path.relative_to(root.path).as_posix()
                 db.execute(
                     """INSERT INTO reference_documents
                        (corpus, source_layer, path, title, content)
