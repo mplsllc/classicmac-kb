@@ -48,10 +48,3 @@ sources:
     locator: {repository: mplsllc/macsurf, sha: 34e81b185575aff9260dfe0df2a058eb37953669}
     redistribution: public
     trust: controlled_observation
-
-  - id: macsurf.commit.fc5b924fa040b9daa00cffe73538d6052e0cd06d
-    kind: git_commit
-    title: Corrected CW8.3 setup, prefix-file and MSL library documentation
-    locator: {repository: mplsllc/macsurf, sha: fc5b924fa040b9daa00cffe73538d6052e0cd06d}
-    redistribution: public
-    trust: controlled_observation
