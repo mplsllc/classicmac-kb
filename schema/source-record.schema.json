@@ -7,7 +7,22 @@
   "required": ["id", "kind", "title", "locator", "redistribution", "trust"],
   "properties": {
     "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]+$"},
-    "kind": {"enum": ["git_commit", "repository_file", "primary_documentation", "installed_toolchain", "hardware_experiment", "community_report"]},
+    "kind": {
+      "enum": [
+        "git_commit",
+        "repository_file",
+        "primary_documentation",
+        "vendor_header",
+        "vendor_release_note",
+        "vendor_sample_code",
+        "historical_book",
+        "installed_toolchain",
+        "hardware_experiment",
+        "community_report",
+        "third_party_prior_art",
+        "external_research"
+      ]
+    },
     "title": {"type": "string"},
     "locator": {
       "type": "object",
