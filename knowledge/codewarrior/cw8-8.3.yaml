@@ -5,7 +5,11 @@ records:
     scope: toolchain
     state: verified
     validation_level: hardware_verified
-    statement: On the tested CodeWarrior Pro 8.3 environment, the AppleEvent command `Update Project` is the verified project-aware Bring Up To Date build operation. `Run project document 1` is a launch operation and must not be used as a substitute when the application is already running.
+    statement: >-
+      On the tested CodeWarrior Pro 8.3 environment, the AppleEvent command
+      `Update Project` is the verified project-aware Bring Up To Date build
+      operation. `Run project document 1` is a launch operation and must not be
+      used as a substitute when the application is already running.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -24,7 +28,11 @@ records:
     scope: toolchain
     state: verified
     validation_level: hardware_verified
-    statement: `Run project document 1` launches the active CodeWarrior project. The safe automated sequence performs Update Project, checks live diagnostics and output identity, then invokes Run and confirms the intended application process starts.
+    statement: >-
+      `Run project document 1` launches the active CodeWarrior project. The safe
+      automated sequence performs Update Project, checks live diagnostics and
+      output identity, then invokes Run and confirms the intended application
+      process starts.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -43,7 +51,11 @@ records:
     scope: toolchain
     state: verified
     validation_level: hardware_verified
-    statement: A large CodeWarrior build can exceed the default AppleEvent timeout and return error -1712 while CodeWarrior continues building. Automation must treat timeout as ambiguous state, query process/project state before retrying, and use an explicit long timeout for known long builds.
+    statement: >-
+      A large CodeWarrior build can exceed the default AppleEvent timeout and
+      return error -1712 while CodeWarrior continues building. Automation must
+      treat timeout as ambiguous state, query process/project state before
+      retrying, and use an explicit long timeout for known long builds.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -62,7 +74,11 @@ records:
     scope: machine
     state: incompatible
     validation_level: hardware_verified
-    statement: On the tested Tiger-hosted CodeWarrior 8.3 installation, direct Add Files AppleEvent forms returned success/noErr yet changed neither project file count nor the project on disk. GUI `Project > Add Files…` is the verified fallback for adding files.
+    statement: >-
+      On the tested Tiger-hosted CodeWarrior 8.3 installation, direct Add Files
+      AppleEvent forms returned success/noErr yet changed neither project file
+      count nor the project on disk. GUI `Project > Add Files…` is the verified
+      fallback for adding files.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -82,7 +98,10 @@ records:
     scope: machine
     state: verified
     validation_level: hardware_verified
-    statement: `Remove Files {file "Volume:Path:File.c"}` is a working CodeWarrior project-membership mutation on the tested target. Automation must confirm the postcondition, such as project file-count change, after mutation.
+    statement: >-
+      `Remove Files {file "Volume:Path:File.c"}` is a working CodeWarrior
+      project-membership mutation on the tested target. Automation must confirm
+      the postcondition, such as project file-count change, after mutation.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -100,7 +119,11 @@ records:
     scope: toolchain
     state: decision
     validation_level: codewarrior_verified
-    statement: An operation or property appearing in CodeWarrior's installed AETE dictionary is classified as discovered/documented, not verified. Promotion to verified requires a controlled probe with an observable postcondition and preserved failure behavior.
+    statement: >-
+      An operation or property appearing in CodeWarrior's installed AETE
+      dictionary is classified as discovered/documented, not verified. Promotion
+      to verified requires a controlled probe with an observable postcondition
+      and preserved failure behavior.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -117,7 +140,11 @@ records:
     scope: toolchain
     state: verified
     validation_level: hardware_verified
-    statement: `Save Error Window As` is verified on the target and produces retrievable plain-text compiler/linker diagnostics. Build automation should preserve that text and stop before launch or packaging on blocking diagnostics instead of relying primarily on screenshots.
+    statement: >-
+      `Save Error Window As` is verified on the target and produces retrievable
+      plain-text compiler/linker diagnostics. Build automation should preserve
+      that text and stop before launch or packaging on blocking diagnostics
+      instead of relying primarily on screenshots.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -135,7 +162,12 @@ records:
     scope: machine
     state: verified
     validation_level: hardware_verified
-    statement: The tested iMac environment has no installed `cwctl`, `mwcc`, `mwld`, `ToolServer`, or `toolserver` executable available as a standalone command-line build path. The `MW C-C++ PPC` and linker items in the CodeWarrior installation are IDE plug-ins and must not be treated as Unix compiler drivers.
+    statement: >-
+      The tested iMac environment has no installed `cwctl`, `mwcc`, `mwld`,
+      `ToolServer`, or `toolserver` executable available as a standalone
+      command-line build path. The `MW C-C++ PPC` and linker items in the
+      CodeWarrior installation are IDE plug-ins and must not be treated as Unix
+      compiler drivers.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
@@ -151,7 +183,11 @@ records:
     scope: machine
     state: verified
     validation_level: hardware_verified
-    statement: The tested environment can create a native `.mcp` project by driving `File > Import Project…` through GUI automation. The XML file requires the expected HFS metadata (TEXT/CWIE) before import. This is the verified project-bootstrap path where direct AppleEvent support is absent.
+    statement: >-
+      The tested environment can create a native `.mcp` project by driving
+      `File > Import Project…` through GUI automation. The XML file requires the
+      expected HFS metadata (TEXT/CWIE) before import. This is the verified
+      project-bootstrap path where direct AppleEvent support is absent.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
