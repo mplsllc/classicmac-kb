@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 
 from .build_index import GitRepo, build
+from .catalog_references import registered_reference_roots
 from .document_index import DocumentRepo, index_documents
 from .reference_index import ReferenceRoot, index_references
 from .source_metadata import index_source_metadata
@@ -42,6 +43,10 @@ def _parse_reference_root(value: str) -> ReferenceRoot:
         source_layer = "historical_reference"
         name = label
     return ReferenceRoot(name=name, path=path, source_layer=source_layer)
+
+
+def _parse_registered_reference_repo(value: str) -> tuple[str, Path]:
+    return _parse_named_path(value, label="registered reference repository")
 
 
 def main() -> None:
@@ -84,8 +89,19 @@ def main() -> None:
         default=[],
         metavar="[LAYER:]NAME=/PATH",
         help=(
-            "index a private historical/vendor reference file or directory into the "
-            "separate noncanonical follow-up index; repeatable"
+            "index an ad-hoc private historical/vendor reference file or directory "
+            "into the separate noncanonical follow-up index; repeatable"
+        ),
+    )
+    parser.add_argument(
+        "--registered-reference-repo",
+        action="append",
+        type=_parse_registered_reference_repo,
+        default=[],
+        metavar="REPOSITORY=/PATH",
+        help=(
+            "resolve source-registry `parts` for REPOSITORY against a private local "
+            "checkout and index them with source/version/applicability metadata; repeatable"
         ),
     )
     args = parser.parse_args()
@@ -99,7 +115,18 @@ def main() -> None:
     build(root, output, args.git_repo)
     metadata_count = index_source_metadata(output, root)
     document_count = index_documents(output, args.document_repo)
-    reference_count = index_references(output, args.reference_root)
+
+    reference_roots = list(args.reference_root)
+    for repository_name, repository_root in args.registered_reference_repo:
+        reference_roots.extend(
+            registered_reference_roots(
+                root,
+                repository_name=repository_name,
+                repository_root=repository_root,
+            )
+        )
+    reference_count = index_references(output, reference_roots)
+
     print(f"indexed metadata for {metadata_count} registered sources")
     print(f"indexed {document_count} current repository documents")
     print(f"indexed {reference_count} historical/vendor reference documents")
