@@ -1,0 +1,200 @@
+schema_version: 1
+sources:
+  - id: metrowerks-c-compiler-reference-3
+    title: CodeWarrior C Compilers Reference 3.0
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/C_Compilers_Reference_3.0.txt
+      - books/HTML/C_Compilers_Reference_3.0.html
+      - books/HTML/C_Compilers_Reference_3.0/
+    domains: [c_language, compiler, metrowerks, codewarrior]
+
+  - id: metrowerks-msl-c-reference
+    title: MSL C Reference
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/MSL_C_Reference.txt
+      - books/HTML/MSL_C_Reference.html
+      - books/HTML/MSL_C_Reference/
+    domains: [c_runtime, msl, codewarrior]
+
+  - id: metrowerks-targeting-mac-os
+    title: Targeting Mac OS
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Targeting_Mac_OS.txt
+      - books/HTML/Targeting_Mac_OS.html
+      - books/HTML/Targeting_Mac_OS/
+    domains: [classic_mac_os, carbon, compiler, linker, debugger, codewarrior]
+
+  - id: metrowerks-ide-user-guide-5
+    title: CodeWarrior IDE 5.0 User Guide
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/IDE_5.0_User_Guide.txt
+      - books/HTML/IDE_5.0_User_Guide.html
+      - books/HTML/IDE_5.0_User_Guide/
+    domains: [ide, project_model, targets, build, codewarrior]
+
+  - id: metrowerks-extending-codewarrior-ide
+    title: Extending CodeWarrior IDE
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Extending_CodeWarrior_IDE.txt
+      - books/HTML/Extending_CodeWarrior_IDE.html
+      - books/HTML/Extending_CodeWarrior_IDE/
+    domains: [ide, plugin_api, applescript, appleevents, project_model]
+
+  - id: metrowerks-ide-sdk-api-reference-5-1
+    title: CodeWarrior Development Tools IDE 5.1 SDK API Reference
+    vendor: Metrowerks/Freescale
+    revision: '2003-08-25'
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    applicability:
+      documented_product: IDE 5.1 SDK
+      codewarrior_8_3: unverified
+    repository: mplsllc/macsurf-private
+    multipart: true
+    parts:
+      - order: 1
+        path: books/text/SDKAPIRM.txt
+      - order: 2
+        path: books/text/SDKAPIRM2.txt
+    domains: [ide, plugin_api, project_model, access_paths, target_info, diagnostics]
+    notes:
+      - Do not infer CW8 support for an API solely from this manual.
+      - Use exact CW8 headers/API version or controlled behavior to promote compatibility.
+
+  - id: metrowerks-assembler-reference
+    title: Assembler Reference
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Assembler_Reference.txt
+      - books/HTML/Assembler_Reference.html
+      - books/HTML/Assembler_Reference/
+    domains: [powerpc, assembler, toolchain]
+
+  - id: metrowerks-profiler-user-guide
+    title: Profiler User Guide
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_or_followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Profiler_User_Guide.txt
+    domains: [profiling, performance, codewarrior]
+
+  - id: metrowerks-zoneranger-user-guide
+    title: ZoneRanger User Guide
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_or_followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/ZoneRanger_User_Guide.txt
+    domains: [memory, diagnostics, debugging]
+
+  - id: metrowerks-powerplant-carbon-porting-guide
+    title: PowerPlant Carbon Porting Guide
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/PP_Carbon_Porting_Guide.txt
+    domains: [carbon, porting, powerplant]
+
+  - id: metrowerks-powerplant-reference
+    title: PowerPlant Reference
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_or_followup
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/PowerPlant_Reference.txt
+    domains: [powerplant, cplusplus, classic_mac_os]
+    restrictions:
+      c89_default_context: exclude
+
+  - id: metrowerks-msl-cplusplus-reference
+    title: MSL C++ Reference
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_only_for_cplusplus
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/MSL_C++_Reference.txt
+    domains: [cplusplus, msl]
+    restrictions:
+      c89_default_context: exclude
+
+  - id: metrowerks-targeting-windows
+    title: Targeting Windows
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_only
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Targeting_Windows.txt
+    domains: [windows, codewarrior]
+    restrictions:
+      classic_mac_default_context: exclude
+
+  - id: metrowerks-targeting-java-vm
+    title: Targeting the Java VM
+    vendor: Metrowerks
+    source_class: primary_vendor_documentation
+    storage: private_reference
+    canonical: false
+    retrieval: explicit_only
+    repository: mplsllc/macsurf-private
+    parts:
+      - books/text/Targeting_the_Java_VM.txt
+    domains: [java, codewarrior]
+    restrictions:
+      classic_mac_c_default_context: exclude
