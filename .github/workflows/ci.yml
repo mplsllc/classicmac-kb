@@ -59,7 +59,9 @@ jobs:
         working-directory: classicmac-kb
         run: |
           python - <<'PY'
+          import json
           import sqlite3
+
           db = sqlite3.connect("build/classicmac.sqlite")
           knowledge = db.execute("select count(*) from knowledge").fetchone()[0]
           sources = db.execute("select count(*) from sources").fetchone()[0]
@@ -83,4 +85,18 @@ jobs:
           assert db.execute(
               "select path from document_fts where document_fts match 'CodeWarrior' limit 1"
           ).fetchone() is not None
+
+          row = db.execute(
+              "select metadata_json from source_metadata "
+              "where source_id='metrowerks-ide-sdk-api-reference-5-1'"
+          ).fetchone()
+          assert row is not None
+          metadata = json.loads(row[0])
+          assert metadata["revision"] == "2003-08-25"
+          assert metadata["applicability"]["codewarrior_8_3"] == "unverified"
+          assert [part["order"] for part in metadata["parts"]] == [1, 2]
+          assert [part["path"] for part in metadata["parts"]] == [
+              "books/text/SDKAPIRM.txt",
+              "books/text/SDKAPIRM2.txt",
+          ]
           PY
