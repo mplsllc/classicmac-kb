@@ -30,8 +30,17 @@ def _parse_document_repo(value: str) -> DocumentRepo:
 
 
 def _parse_reference_root(value: str) -> ReferenceRoot:
-    name, path = _parse_named_path(value, label="reference root")
-    return ReferenceRoot(name=name, path=path)
+    label, path = _parse_named_path(value, label="reference input")
+    if ":" in label:
+        source_layer, name = label.split(":", 1)
+        if not source_layer or not name:
+            raise argparse.ArgumentTypeError(
+                "reference input must be [LAYER:]NAME=/path/to/file-or-directory"
+            )
+    else:
+        source_layer = "historical_reference"
+        name = label
+    return ReferenceRoot(name=name, path=path, source_layer=source_layer)
 
 
 def main() -> None:
@@ -72,10 +81,10 @@ def main() -> None:
         action="append",
         type=_parse_reference_root,
         default=[],
-        metavar="NAME=/PATH",
+        metavar="[LAYER:]NAME=/PATH",
         help=(
-            "index a private historical/vendor reference directory into the separate "
-            "noncanonical follow-up reference index; repeatable"
+            "index a private historical/vendor reference file or directory into the "
+            "separate noncanonical follow-up index; repeatable"
         ),
     )
     args = parser.parse_args()
