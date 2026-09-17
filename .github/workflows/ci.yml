@@ -38,10 +38,22 @@ jobs:
 
       - name: Build canonical plus public first-party evidence indexes
         working-directory: classicmac-kb
+        shell: bash
         run: |
+          set -o pipefail
           classicmac-kb-build \
             --git-repo mplsllc/macsurf="$GITHUB_WORKSPACE/sources/macsurf" \
-            --document-repo mplsllc/macsurf="$GITHUB_WORKSPACE/sources/macsurf"
+            --document-repo mplsllc/macsurf="$GITHUB_WORKSPACE/sources/macsurf" \
+            2>&1 | tee build-index.log
+
+      - name: Upload build diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: classicmac-kb-build-diagnostics
+          path: classicmac-kb/build-index.log
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Verify indexed corpus
         working-directory: classicmac-kb
