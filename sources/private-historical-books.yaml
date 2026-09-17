@@ -1,0 +1,31 @@
+schema_version: 1
+sources:
+  - id: book.sydow.metrowerks_codewarrior_programming
+    kind: historical_book
+    title: Metrowerks CodeWarrior Programming — Dan Parks Sydow
+    locator:
+      repository: mplsllc/macsurf-private
+      path: books/Metrowerks CodeWarrior programming (Sydow, Dan Parks) (z-library.sk, 1lib.sk, z-lib.sk).txt
+    redistribution: metadata_only
+    trust: secondary
+    notes: Period CodeWarrior programming book. Follow-up historical context only; never establishes exact CW8.3/API compatibility by itself.
+
+  - id: book.codewarrior_software_development_using_powerplant
+    kind: historical_book
+    title: CodeWarrior Software Development Using PowerPlant
+    locator:
+      repository: mplsllc/macsurf-private
+      path: books/CodeWarrior software development using PowerPlant.txt
+    redistribution: metadata_only
+    trust: secondary
+    notes: Period application/framework development book. Useful for historical CodeWarrior, Toolbox, resources, events, Apple Events, and project conventions; PowerPlant-specific guidance is scoped accordingly.
+
+  - id: book.lin_snyder.codewarrior_principles_of_programming
+    kind: historical_book
+    title: CodeWarrior Principles of Programming — Calvin Lin and Larry Snyder
+    locator:
+      repository: mplsllc/macsurf-private
+      path: books/CodeWarrior Principles of Programming -- Calvin Lin, Larry Snyder.txt
+    redistribution: metadata_only
+    trust: secondary
+    notes: General/period programming reference. Lowest-priority of the current three historical books for Classic Mac compatibility questions.
