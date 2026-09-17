@@ -46,6 +46,15 @@ def _iter_grouped(root: Path, dirname: str, key: str) -> Iterable[tuple[Path, di
         return
     for path in sorted(base.rglob("*.yaml")):
         doc = _load_yaml(path)
+        if doc.get("schema_version") != 1:
+            raise ValueError(
+                f"{path}: unsupported or missing grouped schema_version; expected 1"
+            )
+        unexpected = set(doc) - {"schema_version", key}
+        if unexpected:
+            raise ValueError(
+                f"{path}: unexpected top-level keys: {', '.join(sorted(unexpected))}"
+            )
         items = doc.get(key, [])
         if not isinstance(items, list):
             raise ValueError(f"{path}: {key} must be a list")
