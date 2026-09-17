@@ -1,6 +1,6 @@
 schema_version: 1
 sources:
-  - id: metrowerks.c-compiler-reference-3
+  - id: metrowerks.c_compiler_reference_3
     kind: primary_documentation
     title: CodeWarrior C Compilers Reference 3.0
     locator: {repository: mplsllc/macsurf-private, path: books/text/C_Compilers_Reference_3.0.txt}
@@ -8,7 +8,7 @@ sources:
     trust: primary_source
     notes: Private searchable vendor reference; documented behavior is not automatically CW8.3-verified.
 
-  - id: metrowerks.msl-c-reference
+  - id: metrowerks.msl_c_reference
     kind: primary_documentation
     title: Metrowerks Standard Library C Reference
     locator: {repository: mplsllc/macsurf-private, path: books/text/MSL_C_Reference.txt}
@@ -16,7 +16,7 @@ sources:
     trust: primary_source
     notes: Preferred follow-up source for MSL/libc availability and Mac-specific runtime behavior.
 
-  - id: metrowerks.targeting-mac-os
+  - id: metrowerks.targeting_mac_os
     kind: primary_documentation
     title: Targeting Mac OS
     locator: {repository: mplsllc/macsurf-private, path: books/text/Targeting_Mac_OS.txt}
@@ -24,7 +24,7 @@ sources:
     trust: primary_source
     notes: Mac-target toolchain and runtime reference; exact applicability must be scoped to the documented release.
 
-  - id: metrowerks.ide-5-user-guide
+  - id: metrowerks.ide_5_user_guide
     kind: primary_documentation
     title: CodeWarrior IDE 5.0 User Guide
     locator: {repository: mplsllc/macsurf-private, path: books/text/IDE_5.0_User_Guide.txt}
@@ -32,7 +32,7 @@ sources:
     trust: primary_source
     notes: Project/target/build/IDE semantics; does not by itself prove CW8.3 automation behavior.
 
-  - id: metrowerks.extending-codewarrior-ide
+  - id: metrowerks.extending_codewarrior_ide
     kind: primary_documentation
     title: Extending CodeWarrior IDE
     locator: {repository: mplsllc/macsurf-private, path: books/text/Extending_CodeWarrior_IDE.txt}
@@ -40,7 +40,7 @@ sources:
     trust: primary_source
     notes: Primary reference for IDE extensions, scripting, and plug-in architecture.
 
-  - id: metrowerks.ide-5.1-sdk-api-reference.part1
+  - id: metrowerks.ide_5.1_sdk_api_reference.part1
     kind: primary_documentation
     title: CodeWarrior IDE 5.1 SDK API Reference — Part 1
     locator: {repository: mplsllc/macsurf-private, path: books/text/SDKAPIRM.txt}
@@ -48,7 +48,7 @@ sources:
     trust: primary_source
     notes: First half of one manual, revised 25-Aug-2003. Documents common Plugin API callbacks including IDE/API identity, project-file, access-path, target, and diagnostic routines. Treat as IDE 5.1 evidence until verified against CW8.
 
-  - id: metrowerks.ide-5.1-sdk-api-reference.part2
+  - id: metrowerks.ide_5.1_sdk_api_reference.part2
     kind: primary_documentation
     title: CodeWarrior IDE 5.1 SDK API Reference — Part 2
     locator: {repository: mplsllc/macsurf-private, path: books/text/SDKAPIRM2.txt}
@@ -56,7 +56,7 @@ sources:
     trust: primary_source
     notes: Continuation of Part 1 around SDK-372; includes VCS Plugin API and later reference material. Same manual/source identity as Part 1.
 
-  - id: metrowerks.assembler-reference
+  - id: metrowerks.assembler_reference
     kind: primary_documentation
     title: CodeWarrior Assembler Reference
     locator: {repository: mplsllc/macsurf-private, path: books/text/Assembler_Reference.txt}
@@ -64,7 +64,7 @@ sources:
     trust: primary_source
     notes: Follow-up source for assembler/toolchain behavior; project-specific ABI claims still require applicability review.
 
-  - id: metrowerks.porting-guide
+  - id: metrowerks.porting_guide
     kind: primary_documentation
     title: CodeWarrior Porting Guide
     locator: {repository: mplsllc/macsurf-private, path: books/text/Porting_Guide.txt}
@@ -72,7 +72,7 @@ sources:
     trust: primary_source
     notes: Historical porting guidance; never use to import incompatible modern or cross-target assumptions automatically.
 
-  - id: metrowerks.powerplant-carbon-porting-guide
+  - id: metrowerks.powerplant_carbon_porting_guide
     kind: primary_documentation
     title: PowerPlant Carbon Porting Guide
     locator: {repository: mplsllc/macsurf-private, path: books/text/PP_Carbon_Porting_Guide.txt}
@@ -80,7 +80,7 @@ sources:
     trust: primary_source
     notes: Useful Carbon transition reference; PowerPlant-specific advice is scoped accordingly.
 
-  - id: metrowerks.profiler-user-guide
+  - id: metrowerks.profiler_user_guide
     kind: primary_documentation
     title: CodeWarrior Profiler User Guide
     locator: {repository: mplsllc/macsurf-private, path: books/text/Profiler_User_Guide.txt}
@@ -88,7 +88,7 @@ sources:
     trust: primary_source
     notes: Period-correct profiling/tooling reference.
 
-  - id: metrowerks.zoneranger-user-guide
+  - id: metrowerks.zoneranger_user_guide
     kind: primary_documentation
     title: ZoneRanger User Guide
     locator: {repository: mplsllc/macsurf-private, path: books/text/ZoneRanger_User_Guide.txt}
@@ -96,7 +96,7 @@ sources:
     trust: primary_source
     notes: Memory/debugging diagnostic reference.
 
-  - id: metrowerks.powerplant-book
+  - id: metrowerks.powerplant_book
     kind: primary_documentation
     title: PowerPlant Book
     locator: {repository: mplsllc/macsurf-private, path: books/text/PowerPlant_Book.txt}
@@ -104,7 +104,7 @@ sources:
     trust: primary_source
     notes: Framework reference that also preserves period CodeWarrior/Toolbox conventions; not automatically relevant to non-PowerPlant projects.
 
-  - id: metrowerks.powerplant-advanced-topics
+  - id: metrowerks.powerplant_advanced_topics
     kind: primary_documentation
     title: PowerPlant Advanced Topics
     locator: {repository: mplsllc/macsurf-private, path: books/text/PowerPlant_Advanced_Topics.txt}
@@ -112,7 +112,7 @@ sources:
     trust: primary_source
     notes: Follow-up framework/reference corpus only.
 
-  - id: metrowerks.powerplant-reference
+  - id: metrowerks.powerplant_reference
     kind: primary_documentation
     title: PowerPlant Reference
     locator: {repository: mplsllc/macsurf-private, path: books/text/PowerPlant_Reference.txt}
