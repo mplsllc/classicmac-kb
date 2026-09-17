@@ -72,7 +72,14 @@ records:
     scope: project
     state: unknown
     validation_level: codewarrior_verified
-    statement: MacSurf history contains context-dependent evidence around `NewRoutineDescriptor`: one hardware-debugging round rejected raw ControlActionUPP substitution on the basis that CarbonLib expected a real MixedMode descriptor, while a later macLink build reported `NewAEEventHandlerUPP` expanding to `NewRoutineDescriptor` that was not exported by its local CarbonLib link environment. ClassicMacMCP must therefore query/verify the exact UPP macro expansion, SDK, libraries and target before recommending a construction strategy.
+    statement: >-
+      MacSurf history contains context-dependent evidence around `NewRoutineDescriptor`:
+      one hardware-debugging round rejected raw ControlActionUPP substitution on the
+      basis that CarbonLib expected a real MixedMode descriptor, while a later macLink
+      build reported `NewAEEventHandlerUPP` expanding to `NewRoutineDescriptor` that
+      was not exported by its local CarbonLib link environment. ClassicMacMCP must
+      therefore query/verify the exact UPP macro expansion, SDK, libraries and target
+      before recommending a construction strategy.
     applicability:
       toolchain_family: codewarrior
       toolchain_versions: ["8.3"]
