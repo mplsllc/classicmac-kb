@@ -8,6 +8,7 @@ from pathlib import Path
 from .build_index import GitRepo, build
 from .document_index import DocumentRepo, index_documents
 from .reference_index import ReferenceRoot, index_references
+from .source_metadata import index_source_metadata
 
 
 def _parse_named_path(value: str, *, label: str) -> tuple[str, Path]:
@@ -96,8 +97,10 @@ def main() -> None:
     output = output.resolve()
 
     build(root, output, args.git_repo)
+    metadata_count = index_source_metadata(output, root)
     document_count = index_documents(output, args.document_repo)
     reference_count = index_references(output, args.reference_root)
+    print(f"indexed metadata for {metadata_count} registered sources")
     print(f"indexed {document_count} current repository documents")
     print(f"indexed {reference_count} historical/vendor reference documents")
 
