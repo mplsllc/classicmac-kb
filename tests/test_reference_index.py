@@ -74,15 +74,24 @@ def test_reference_index_is_separate_and_searchable(tmp_path: Path):
         encoding="utf-8",
     )
 
-    count = index_references(database, [ReferenceRoot("metrowerks-private", references)])
+    count = index_references(
+        database,
+        [ReferenceRoot("metrowerks-private", references, "vendor_documentation")],
+    )
     assert count == 2
 
     db = sqlite3.connect(database)
     try:
         row = db.execute(
-            "SELECT corpus, path, title FROM reference_fts WHERE reference_fts MATCH 'CWGetProjectFileCount'"
+            "SELECT corpus, source_layer, path, title FROM reference_fts "
+            "WHERE reference_fts MATCH 'CWGetProjectFileCount'"
         ).fetchone()
-        assert row == ("metrowerks-private", "manual.txt", "manual")
+        assert row == (
+            "metrowerks-private",
+            "vendor_documentation",
+            "manual.txt",
+            "manual",
+        )
 
         html_row = db.execute(
             "SELECT title, content FROM reference_fts WHERE reference_fts MATCH 'CWGetAccessPathInfo'"
@@ -97,7 +106,32 @@ def test_reference_index_is_separate_and_searchable(tmp_path: Path):
         db.close()
 
 
-def test_reference_root_must_exist(tmp_path: Path):
+def test_single_reference_file_can_be_a_separate_historical_book_corpus(tmp_path: Path):
+    root = tmp_path / "kb"
+    root.mkdir()
+    _minimal_kb(root)
+    database = root / "classicmac.sqlite"
+    build(root, database, [])
+
+    book = tmp_path / "sydow.txt"
+    book.write_text("CodeWarrior project and resource discussion", encoding="utf-8")
+    count = index_references(
+        database,
+        [ReferenceRoot("sydow", book, "historical_book")],
+    )
+    assert count == 1
+
+    db = sqlite3.connect(database)
+    try:
+        row = db.execute(
+            "SELECT source_layer, path FROM reference_documents WHERE corpus='sydow'"
+        ).fetchone()
+        assert row == ("historical_book", "sydow.txt")
+    finally:
+        db.close()
+
+
+def test_reference_input_must_exist(tmp_path: Path):
     root = tmp_path / "kb"
     root.mkdir()
     _minimal_kb(root)
@@ -108,6 +142,6 @@ def test_reference_root_must_exist(tmp_path: Path):
     try:
         index_references(database, [ReferenceRoot("missing", missing)])
     except ValueError as exc:
-        assert "not a directory" in str(exc)
+        assert "does not exist" in str(exc)
     else:
-        raise AssertionError("expected missing reference root to fail")
+        raise AssertionError("expected missing reference input to fail")
